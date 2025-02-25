@@ -1,5 +1,8 @@
 package model;
 
+import java.util.Arrays;
+import java.util.List;
+
 public enum PunishmentType {
 
     WARNING(3),
@@ -10,6 +13,7 @@ public enum PunishmentType {
     private static final int EXPULSION_STANDARD = 6;
     private static final int MEETING_STANDARD = 3;
     private static final int WARNING_STANDARD = 2;
+    private static final List<PunishmentType> dangerTypes = Arrays.asList(WARNING, MEETING, EXPULSION);
 
     private final int priority;
 
@@ -28,6 +32,10 @@ public enum PunishmentType {
             return WARNING;
         }
         return NONE;
+    }
+
+    public static boolean isDangerType(PunishmentType type) {
+        return dangerTypes.contains(type);
     }
 
     public int comparePriority(PunishmentType o) {

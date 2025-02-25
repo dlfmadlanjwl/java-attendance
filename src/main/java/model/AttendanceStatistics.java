@@ -18,10 +18,7 @@ public class AttendanceStatistics implements Comparable<AttendanceStatistics> {
     }
 
     public boolean isDanger() {
-        PunishmentType punishmentType = getPunishmentType();
-        return punishmentType.equals(PunishmentType.WARNING) ||
-                punishmentType.equals(PunishmentType.EXPULSION) ||
-                punishmentType.equals(PunishmentType.MEETING);
+        return PunishmentType.isDangerType(getPunishmentType());
     }
 
     public PunishmentType getPunishmentType() {
