@@ -54,7 +54,7 @@ public class AttendanceStatistics implements Comparable<AttendanceStatistics> {
     private int compareWithAbsenceCount(AttendanceStatistics o) {
         int thisAbsenceCount = AttendanceType.calculateConvertedAbsenceCount(statistics);
         int otherAbsenceCount = AttendanceType.calculateConvertedAbsenceCount(o.statistics);
-        return thisAbsenceCount - otherAbsenceCount;
+        return otherAbsenceCount - thisAbsenceCount;
     }
 
     private int compareWithPunishmentType(AttendanceStatistics o) {
