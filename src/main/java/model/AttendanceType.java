@@ -12,6 +12,8 @@ public enum AttendanceType {
     ABSENCE(30),
     ;
 
+    private static final int LATE_COUNT_FOR_ONE_ABSENCE = 3;
+
     private final int standardMinute;
 
     AttendanceType(int standardMinute) {
@@ -30,6 +32,6 @@ public enum AttendanceType {
     }
 
     public static int calculateConvertedAbsenceCount(Map<AttendanceType, Integer> counts) {
-        return counts.getOrDefault(BE_LATE, 0) / 3 + counts.getOrDefault(ABSENCE, 0);
+        return counts.getOrDefault(BE_LATE, 0) / LATE_COUNT_FOR_ONE_ABSENCE + counts.getOrDefault(ABSENCE, 0);
     }
 }
