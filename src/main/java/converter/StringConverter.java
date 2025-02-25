@@ -4,12 +4,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import model.Attendance;
-import model.Attendances;
 import model.Crew;
 import model.Crews;
 
@@ -25,19 +23,13 @@ public class StringConverter {
         return Crews.of(crews);
     }
 
-    public Attendances convertToAttendances(List<String> rawAttendances, Crews crews) {
-        List<Attendance> attendances = new ArrayList<>();
-        for (String rawAttendance : rawAttendances) {
-            String[] attendanceInfo = rawAttendance.split(",");
+    public Attendance convertToAttendance(String rawCheckInDateTime, Crew crew) {
+        LocalDateTime checkInTime = convertToLocalDateTime(rawCheckInDateTime);
+        return Attendance.of(crew, checkInTime);
+    }
 
-            String rawNickname = attendanceInfo[0];
-            String rawCheckInDateTime = attendanceInfo[1];
-
-            Crew crew = crews.findByNickname(rawNickname);
-            attendances.add(Attendance.of(crew, convertToLocalDateTime(rawCheckInDateTime)));
-        }
-
-        return Attendances.of(attendances);
+    public String[] splitToNicknameAndTime(String rawAttendanceInfo) {
+        return rawAttendanceInfo.split(",");
     }
 
     public Attendance convertToAttendance(Crew crew, String rawCheckInTime, LocalDate today) {
