@@ -22,11 +22,7 @@ public class AttendanceStatistics implements Comparable<AttendanceStatistics> {
     }
 
     public PunishmentType getPunishmentType() {
-        return PunishmentType.calculateType(getConvertedAbsenceCount());
-    }
-
-    private int getConvertedAbsenceCount() {
-        return statistics.get(AttendanceType.BE_LATE) / 3 + statistics.get(AttendanceType.ABSENCE);
+        return PunishmentType.calculateType(AttendanceType.calculateConvertedAbsenceCount(statistics));
     }
 
     public Map<AttendanceType, Integer> getStatistics() {
