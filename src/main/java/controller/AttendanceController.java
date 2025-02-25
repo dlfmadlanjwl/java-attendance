@@ -4,6 +4,7 @@ import constant.Command;
 import converter.StringConverter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import model.Attendance;
@@ -17,6 +18,8 @@ import view.OutputView;
 
 public class AttendanceController {
 
+    public static final String ATTENDANCE_FILE_PATH = "src/main/resources/attendances.csv";
+
     private final InputView inputView;
     private final OutputView outputView;
     private final StringConverter stringConverter;
@@ -29,9 +32,9 @@ public class AttendanceController {
 
     public void run() {
         try {
-            List<String> rawAttendances = new DataReader().readAttendances("src/main/resources/attendances.csv");
+            List<String> rawAttendances = new DataReader().readAttendances(ATTENDANCE_FILE_PATH);
             Crews crews = stringConverter.convertToCrews(rawAttendances);
-            Attendances attendances = stringConverter.convertToAttendances(rawAttendances, crews);
+            Attendances attendances = setUpAttendances(crews, rawAttendances);
 
             Command command;
             do {
@@ -41,6 +44,16 @@ public class AttendanceController {
         } catch (RuntimeException e) {
             outputView.printErrorMessage(e);
         }
+    }
+
+    private Attendances setUpAttendances(Crews crews, List<String> rawAttendances) {
+        List<Attendance> attendances = new ArrayList<>();
+        for (String rawAttendance : rawAttendances) {
+            String[] attendanceInfos = stringConverter.splitToNicknameAndTime(rawAttendance);
+            Crew crew = crews.findByNickname(attendanceInfos[0]);
+            attendances.add(stringConverter.convertToAttendance(attendanceInfos[1], crew));
+        }
+        return Attendances.of(attendances);
     }
 
     private Command readCommand() {
